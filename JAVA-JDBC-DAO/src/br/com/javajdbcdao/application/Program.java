@@ -2,8 +2,8 @@ package br.com.javajdbcdao.application;
 
 import java.util.Date;
 
-import br.com.javajdbcdao.entities.Department;
-import br.com.javajdbcdao.entities.Seller;
+import br.com.javajdbcdao.model.entities.Department;
+import br.com.javajdbcdao.model.entities.Seller;
 
 public class Program {
 

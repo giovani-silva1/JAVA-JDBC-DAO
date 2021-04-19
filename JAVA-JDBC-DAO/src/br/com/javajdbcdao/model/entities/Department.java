@@ -1,4 +1,4 @@
-package br.com.javajdbcdao.entities;
+package br.com.javajdbcdao.model.entities;
 
 import java.io.Serializable;
 
