@@ -11,24 +11,31 @@ public class Program {
 
 	public static void main(String[] args) {
 
-		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
-		
+
 		Seller seller = sellerDao.findById(3);
-		
+
+		System.out.println(" ---------- LISTANDO POR DEPARTMENTID -----------------------");
 		List<Seller> sellers = sellerDao.findByDepartmentId(2);
 		for (Seller seller2 : sellers) {
 			System.out.println(seller2);
 		}
-		
-		
+
 		Department department = new Department(2, null);
-		
-		List<Seller>sellersTest = sellerDao.findByDepartment(department);
-		
+
+		System.out.println(" ---------- LISTANDO POR DEPARTMENT -----------------------");
+		List<Seller> sellersTest = sellerDao.findByDepartment(department);
+
 		for (Seller seller2 : sellersTest) {
 			System.out.println(seller2);
 		}
-		System.out.println(seller);
+
+		System.out.println(" ---------- LISTANDO TODOS-----------------------");
+
+		List<Seller> sellersListAll = sellerDao.listAll();
+		for (Seller seller2 : sellersListAll) {
+			System.out.println(seller2);
+		}
+
 	}
 }

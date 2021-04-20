@@ -88,8 +88,34 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public List<Seller> listAll() {
-		// TODO Auto-generated method stub
-		return null;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			preparedStatement = conn.prepareStatement(
+					"select seller.*,department.Name as 'DepName' from seller inner join department department on department.Id = seller.DepartmentId order by name");
+			resultSet = preparedStatement.executeQuery();
+			List<Seller> sellers = new ArrayList<Seller>();
+			Map<Integer, Department> departaments = new HashMap<Integer, Department>();
+			while (resultSet.next()) {
+				Department dep = departaments.get(resultSet.getInt("DepartmentId"));
+				if (dep == null) {
+					dep = instanciateDepartment(resultSet);
+					departaments.put(resultSet.getInt("DepartmentId"), dep);
+				}
+				Seller seller = instanciateSeller(resultSet, dep);
+				sellers.add(seller);
+
+			}
+			return sellers;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(preparedStatement);
+			DB.closeResultSet(resultSet);
+		}
 	}
 
 	@Override
@@ -98,7 +124,8 @@ public class SellerDaoJDBC implements SellerDao {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			preparedStatement = conn.prepareStatement("select seller.*,department.Name as 'DepName' from seller inner join department on seller.DepartmentId = department.Id where department.Id = ? order by name");
+			preparedStatement = conn.prepareStatement(
+					"select seller.*,department.Name as 'DepName' from seller inner join department on seller.DepartmentId = department.Id where department.Id = ? order by name");
 			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -109,8 +136,7 @@ public class SellerDaoJDBC implements SellerDao {
 			return sellers;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new DbException(e.getMessage());
 		} finally {
 			DB.closeStatement(preparedStatement);
 			DB.closeResultSet(resultSet);
@@ -120,40 +146,40 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public List<Seller> findByDepartment(Department department) {
-		
+
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			preparedStatement = conn.prepareStatement("select seller.*,department.Name as 'DepName' from seller inner join department on seller.DepartmentId = department.Id where department.Id = ? order by name");
+			preparedStatement = conn.prepareStatement(
+					"select seller.*,department.Name as 'DepName' from seller inner join department on seller.DepartmentId = department.Id where department.Id = ? order by name");
 			preparedStatement.setInt(1, department.getId());
 			resultSet = preparedStatement.executeQuery();
-			
-			List<Seller>sellers = new ArrayList<Seller>();
-			Map<Integer,Department> departments = new HashMap<Integer, Department>();
-			
-			while(resultSet.next()) {
+
+			List<Seller> sellers = new ArrayList<Seller>();
+			Map<Integer, Department> departments = new HashMap<Integer, Department>();
+
+			while (resultSet.next()) {
 				Department dep = departments.get(resultSet.getInt("DepartmentId"));
-				if(dep == null) {
+				if (dep == null) {
 					dep = instanciateDepartment(resultSet);
 					departments.put(resultSet.getInt("DepartmentId"), dep);
 				}
-				
+
 				Seller seller = instanciateSeller(resultSet, dep);
 				sellers.add(seller);
-				
+
 			}
-		
+
 			return sellers;
 		}
-		
+
 		catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
+			throw new DbException(e.getMessage());
+		} finally {
 			DB.closeStatement(preparedStatement);
 			DB.closeResultSet(resultSet);
 		}
-		
-	
+
 	}
 
 }
