@@ -1,5 +1,6 @@
 package br.com.javajdbcdao.application;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.javajdbcdao.model.dao.DaoFactory;
@@ -36,6 +37,12 @@ public class Program {
 		for (Seller seller2 : sellersListAll) {
 			System.out.println(seller2);
 		}
+
+		System.out.println("------------------- NOVO SELLER --------------------");
+
+		Seller sellerNew = new Seller(null, "Paulo", "Paulo@novoSeller.com", new Date(), 90.000, department);
+		sellerDao.inserir(sellerNew);
+		System.out.println("Novo Vendedor com o novo id é : " + sellerNew.getId());
 
 	}
 }

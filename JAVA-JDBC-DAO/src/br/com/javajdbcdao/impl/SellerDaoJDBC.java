@@ -1,13 +1,17 @@
 package br.com.javajdbcdao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.mysql.cj.xdevapi.Result;
 
 import br.com.javajdbcdao.model.dao.SellerDao;
 import br.com.javajdbcdao.model.entities.Department;
@@ -25,7 +29,35 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void inserir(Seller seller) {
-		// TODO Auto-generated method stub
+
+		PreparedStatement preparedStatement = null;
+
+		try {
+			preparedStatement = conn.prepareStatement("INSERT INTO SELLER (name,email,birthdate,basesalary,departmentid) values (?,?,?,?,?)",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, seller.getName());
+			preparedStatement.setString(2, seller.getEmail());
+			preparedStatement.setDate(3, new Date(seller.getBirthDate().getTime()));
+			preparedStatement.setDouble(4, seller.getBaseSalary());
+			preparedStatement.setInt(5, seller.getDepartment().getId());
+
+			int rows = preparedStatement.executeUpdate();
+
+			if (rows > 0) {
+				ResultSet rs = preparedStatement.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					seller.setId(id);
+				}
+			} else {
+				throw new DbException("Erro inesperado nenhuma linha afetada");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(preparedStatement);
+
+		}
 
 	}
 
