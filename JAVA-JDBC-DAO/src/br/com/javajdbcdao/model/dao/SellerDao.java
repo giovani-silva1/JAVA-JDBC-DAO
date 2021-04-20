@@ -2,6 +2,7 @@ package br.com.javajdbcdao.model.dao;
 
 import java.util.List;
 
+import br.com.javajdbcdao.model.entities.Department;
 import br.com.javajdbcdao.model.entities.Seller;
 
 public interface SellerDao {
@@ -15,4 +16,8 @@ public interface SellerDao {
 	Seller findById(Integer id);
 
 	List<Seller> listAll();
+
+	List<Seller> findByDepartmentId(Integer id);
+
+	List<Seller> findByDepartment(Department department);
 }
