@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mysql.cj.xdevapi.Result;
-
 import br.com.javajdbcdao.model.dao.SellerDao;
 import br.com.javajdbcdao.model.entities.Department;
 import br.com.javajdbcdao.model.entities.Seller;
@@ -87,7 +85,17 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void deletar(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = conn.prepareStatement("DELETE FROM SELLER WHERE id = ?");
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+			
+		}catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(preparedStatement);
+		}
 
 	}
 

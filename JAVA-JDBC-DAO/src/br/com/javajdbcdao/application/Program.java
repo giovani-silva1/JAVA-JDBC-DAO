@@ -49,6 +49,12 @@ public class Program {
 		sellerUpdate.setName("Nome updated");
 		System.out.println("UPDATE REALIZADO COM SUCESSO");
 		sellerDao.update(sellerUpdate);
+		
+		
+		System.out.println("--------------- EXCLUINDO UM SELLER ------------------");
+		
+		sellerDao.deletar(16);
+		System.out.println("Deletado com sucesso");
 
 	}
 }
