@@ -33,7 +33,8 @@ public class SellerDaoJDBC implements SellerDao {
 		PreparedStatement preparedStatement = null;
 
 		try {
-			preparedStatement = conn.prepareStatement("INSERT INTO SELLER (name,email,birthdate,basesalary,departmentid) values (?,?,?,?,?)",
+			preparedStatement = conn.prepareStatement(
+					"INSERT INTO SELLER (name,email,birthdate,basesalary,departmentid) values (?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, seller.getName());
 			preparedStatement.setString(2, seller.getEmail());
@@ -63,7 +64,24 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void update(Seller seller) {
-		// TODO Auto-generated method stub
+
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = conn.prepareStatement(
+					"UPDATE SELLER set name = ? , email = ? ,birthdate = ? ,basesalary = ? , departmentId = ? where id = ?");
+			preparedStatement.setString(1, seller.getName());
+			preparedStatement.setString(2, seller.getEmail());
+			preparedStatement.setDate(3, new Date(seller.getBirthDate().getTime()));
+			preparedStatement.setDouble(4, seller.getBaseSalary());
+			preparedStatement.setInt(5, seller.getDepartment().getId());
+			preparedStatement.setInt(6, seller.getId());
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(preparedStatement);
+		}
 
 	}
 

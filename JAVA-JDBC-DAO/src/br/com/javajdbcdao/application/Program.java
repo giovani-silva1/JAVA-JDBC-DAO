@@ -44,5 +44,11 @@ public class Program {
 		sellerDao.inserir(sellerNew);
 		System.out.println("Novo Vendedor com o novo id é : " + sellerNew.getId());
 
+		System.out.println("------------------ FAZENDO UPDATE ------------------");
+		Seller sellerUpdate = sellerDao.findById(1);
+		sellerUpdate.setName("Nome updated");
+		System.out.println("UPDATE REALIZADO COM SUCESSO");
+		sellerDao.update(sellerUpdate);
+
 	}
 }
