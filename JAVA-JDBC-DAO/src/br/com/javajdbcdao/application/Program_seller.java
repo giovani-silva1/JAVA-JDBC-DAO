@@ -8,7 +8,7 @@ import br.com.javajdbcdao.model.dao.SellerDao;
 import br.com.javajdbcdao.model.entities.Department;
 import br.com.javajdbcdao.model.entities.Seller;
 
-public class Program {
+public class Program_seller {
 
 	public static void main(String[] args) {
 
